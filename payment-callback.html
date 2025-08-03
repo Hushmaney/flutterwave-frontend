@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Payment Callback</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #f5f5f5;
+      text-align: center;
+    }
+    #message {
+      font-size: 1.5rem;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Payment Status</h1>
+  <div id="message">🔄 Checking payment status...</div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const tx_ref = urlParams.get('tx_ref');
+
+    const messageEl = document.getElementById('message');
+
+    if (!tx_ref) {
+      messageEl.textContent = '❌ No transaction reference found.';
+    } else {
+      fetch(`http://localhost:3000/api/verify?tx_ref=${tx_ref}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.transaction && data.transaction.status === 'successful') {
+            messageEl.textContent = '🎉 Payment successful! Thank you.';
+          } else {
+            messageEl.textContent = '❌ Payment not successful.';
+          }
+        })
+        .catch(err => {
+          console.error('Error verifying payment:', err);
+          messageEl.textContent = '❌ Error verifying payment.';
+        });
+    }
+  </script>
+</body>
+</html>

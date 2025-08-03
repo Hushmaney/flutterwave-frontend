@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Transaction History</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 40px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .back-btn {
+      display: inline-block;
+      margin: 20px auto;
+      text-align: center;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .back-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>📄 Transaction History</h1>
+  <table id="transactionsTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Amount (GHS)</th>
+        <th>Tx Ref</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div style="text-align: center;">
+    <a class="back-btn" href="index.html">⬅ Back to Home</a>
+  </div>
+
+  <script>
+    fetch('https://flutterwave-server-i4ae.onrender.com/api/transactions')
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#transactionsTable tbody');
+        data.reverse().forEach(tx => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${tx.name || tx.customer?.name || '-'}</td>
+            <td>${tx.email || tx.customer?.email || '-'}</td>
+            <td>${tx.amount}</td>
+            <td>${tx.tx_ref}</td>
+            <td>${tx.status || 'pending'}</td>
+            <td>${new Date(tx.createdAt).toLocaleString()}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(err => {
+        console.error('Failed to load transactions:', err);
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Transaction History</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      background-color: #f8f8f8;
+    }
+    h1 {
+      text-align: center;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+      background-color: #fff;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #007BFF;
+      color: white;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Transaction History</h1>
+  <table id="transactionsTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Amount (GHS)</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Transaction Ref</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Rows will be injected here -->
+    </tbody>
+  </table>
+
+  <script>
+    async function loadTransactions() {
+      try {
+        const response = await fetch('https://flutterwave-server-1.onrender.com/transactions');
+        const transactions = await response.json();
+
+        const tbody = document.querySelector("#transactionsTable tbody");
+        transactions.reverse().forEach(tx => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${tx.name || tx.customer?.name || 'N/A'}</td>
+            <td>${tx.email || tx.customer?.email || 'N/A'}</td>
+            <td>${tx.amount}</td>
+            <td>${tx.status || 'Pending'}</td>
+            <td>${new Date(tx.createdAt).toLocaleString()}</td>
+            <td>${tx.tx_ref || tx.reference || 'N/A'}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Error loading transactions:", err);
+        alert("Failed to load transactions.");
+      }
+    }
+
+    loadTransactions();
+  </script>
+</body>
+</html>

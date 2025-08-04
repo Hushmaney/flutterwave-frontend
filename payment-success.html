@@ -5,44 +5,40 @@
   <title>Payment Success</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
       text-align: center;
       padding: 50px;
+      background-color: #f0f4f8;
     }
-    .container {
-      background: white;
-      padding: 40px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      display: inline-block;
-    }
+
     h1 {
       color: #28a745;
     }
+
     p {
       font-size: 18px;
     }
-    .btn {
+
+    a.button {
       display: inline-block;
       margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
+      padding: 12px 24px;
       background-color: #007bff;
-      color: white;
+      color: #fff;
       text-decoration: none;
-      border-radius: 5px;
+      border-radius: 6px;
+      font-weight: bold;
     }
-    .btn:hover {
+
+    a.button:hover {
       background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>✅ Payment Successful!</h1>
-    <p>Thank you for your payment. Your wallet has been topped up.</p>
-    <a class="btn" href="transactions.html">View Transaction History</a>
-  </div>
+  <h1>✅ Payment Successful!</h1>
+  <p>Thank you for your payment. Your wallet has been topped up.</p>
+
+  <a href="transactions.html" class="button">View Transaction History</a>
 </body>
 </html>
